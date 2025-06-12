@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">pH Reader</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="history_list">History of measurements</string>
+    <string name="info_popup">Wi-Fi Info</string>
+    <string name="led_toggle">Toggle LED</string>
+    <string name="capture">Take Picture</string>
+
+
+</resources>

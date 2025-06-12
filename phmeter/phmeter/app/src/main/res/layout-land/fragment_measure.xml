@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Info “?” button -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
+
+            <ImageButton
+                android:id="@+id/btnInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:foregroundTint="@color/black"
+                android:backgroundTint="@color/black"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_info_details"
+                android:contentDescription="@string/info_popup"/>
+        </FrameLayout>
+        <!-- LED toggle + Capture FAB side by side -->
+        <!-- Four ROI circles -->
+        <LinearLayout
+            android:id="@+id/rowRoIs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@android:color/white"
+            android:padding="12dp"
+            android:layout_gravity="center_horizontal"
+            android:elevation="2dp"
+            android:layout_marginVertical="24dp"
+            android:layout_marginHorizontal="16dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:backgroundTint="@android:color/white"
+            android:backgroundTintMode="src_over"
+            android:layout_marginTop="24dp">
+
+            <ImageView
+                android:id="@+id/roi1"
+                style="@style/CircularImageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"/>
+
+            <ImageView
+                android:id="@+id/roi2"
+                style="@style/CircularImageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"/>
+
+            <ImageView
+                android:id="@+id/roi3"
+                style="@style/CircularImageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"/>
+
+            <ImageView
+                android:id="@+id/roi4"
+                style="@style/CircularImageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="92dp">   <!-- << Add this -->
+
+            <TextView
+                android:id="@+id/textPHValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="pH: –"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/phtextcolor"
+                android:layout_marginBottom="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/buttoncolor"
+                android:text="SAVE"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="120dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLedToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:contentDescription="@string/led_toggle"
+                    android:padding="2dp"
+                    android:text="LED"
+                    app:backgroundTint="@color/buttoncolor"
+                    app:icon="@drawable/ic_flash_off"
+                    app:iconTint="@color/white" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fabCapture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/capture"
+                    android:src="@android:drawable/ic_menu_camera"
+                    app:backgroundTint="@color/buttoncolor"
+                    app:tint="@android:color/white" />
+                <ImageButton
+                    android:id="@+id/btnDebugOverlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="2dp"
+                    android:contentDescription="Debug Overlay"
+                    app:backgroundTint="@color/buttoncolor"
+                    android:text="debug"
+                    android:src="@android:drawable/ic_menu_camera"
+                    app:tint="@android:color/white" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>

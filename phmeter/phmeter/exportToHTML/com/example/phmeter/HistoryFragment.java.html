@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>HistoryFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #7a7e85;}
+.s1 { color: #bcbec4;}
+.s2 { color: #cf8e6d;}
+.s3 { color: #bcbec4;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+HistoryFragment.java</font>
+</center></td></tr></table>
+<pre><span class="s0">// HistoryFragment.java</span>
+<span class="s2">package </span><span class="s1">com</span><span class="s3">.</span><span class="s1">example</span><span class="s3">.</span><span class="s1">phmeter</span><span class="s3">;</span>
+
+<span class="s2">import </span><span class="s1">android</span><span class="s3">.</span><span class="s1">os</span><span class="s3">.</span><span class="s1">Bundle</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">android</span><span class="s3">.</span><span class="s1">view</span><span class="s3">.</span><span class="s1">LayoutInflater</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">android</span><span class="s3">.</span><span class="s1">view</span><span class="s3">.</span><span class="s1">View</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">android</span><span class="s3">.</span><span class="s1">view</span><span class="s3">.</span><span class="s1">ViewGroup</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">androidx</span><span class="s3">.</span><span class="s1">annotation</span><span class="s3">.</span><span class="s1">NonNull</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">androidx</span><span class="s3">.</span><span class="s1">annotation</span><span class="s3">.</span><span class="s1">Nullable</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">androidx</span><span class="s3">.</span><span class="s1">fragment</span><span class="s3">.</span><span class="s1">app</span><span class="s3">.</span><span class="s1">Fragment</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">androidx</span><span class="s3">.</span><span class="s1">recyclerview</span><span class="s3">.</span><span class="s1">widget</span><span class="s3">.</span><span class="s1">LinearLayoutManager</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">androidx</span><span class="s3">.</span><span class="s1">recyclerview</span><span class="s3">.</span><span class="s1">widget</span><span class="s3">.</span><span class="s1">RecyclerView</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">com</span><span class="s3">.</span><span class="s1">example</span><span class="s3">.</span><span class="s1">phmeter</span><span class="s3">.</span><span class="s1">data</span><span class="s3">.</span><span class="s1">AppDatabase</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">com</span><span class="s3">.</span><span class="s1">example</span><span class="s3">.</span><span class="s1">phmeter</span><span class="s3">.</span><span class="s1">data</span><span class="s3">.</span><span class="s1">Measurement</span><span class="s3">;</span>
+<span class="s2">import </span><span class="s1">java</span><span class="s3">.</span><span class="s1">util</span><span class="s3">.</span><span class="s1">List</span><span class="s3">;</span>
+
+
+<span class="s2">public class </span><span class="s1">HistoryFragment </span><span class="s2">extends </span><span class="s1">Fragment </span><span class="s3">{</span>
+    <span class="s2">private </span><span class="s1">RecyclerView recyclerHistory</span><span class="s3">;</span>
+    <span class="s2">private </span><span class="s1">MeasurementAdapter adapter</span><span class="s3">;</span>
+
+    <span class="s1">@Nullable</span>
+    <span class="s1">@Override</span>
+    <span class="s2">public </span><span class="s1">View onCreateView</span><span class="s3">(</span><span class="s1">@NonNull LayoutInflater inflater</span><span class="s3">, </span><span class="s1">@Nullable ViewGroup container</span><span class="s3">,</span>
+                             <span class="s1">@Nullable Bundle savedInstanceState</span><span class="s3">) {</span>
+        <span class="s2">return </span><span class="s1">inflater</span><span class="s3">.</span><span class="s1">inflate</span><span class="s3">(</span><span class="s1">R</span><span class="s3">.</span><span class="s1">layout</span><span class="s3">.</span><span class="s1">fragment_history</span><span class="s3">, </span><span class="s1">container</span><span class="s3">, </span><span class="s2">false</span><span class="s3">);</span>
+    <span class="s3">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s2">public void </span><span class="s1">onViewCreated</span><span class="s3">(</span><span class="s1">@NonNull View view</span><span class="s3">, </span><span class="s1">@Nullable Bundle savedInstanceState</span><span class="s3">) {</span>
+        <span class="s2">super</span><span class="s3">.</span><span class="s1">onViewCreated</span><span class="s3">(</span><span class="s1">view</span><span class="s3">, </span><span class="s1">savedInstanceState</span><span class="s3">);</span>
+        <span class="s1">recyclerHistory </span><span class="s3">= </span><span class="s1">view</span><span class="s3">.</span><span class="s1">findViewById</span><span class="s3">(</span><span class="s1">R</span><span class="s3">.</span><span class="s1">id</span><span class="s3">.</span><span class="s1">recyclerHistory</span><span class="s3">);</span>
+        <span class="s1">recyclerHistory</span><span class="s3">.</span><span class="s1">setLayoutManager</span><span class="s3">(</span><span class="s2">new </span><span class="s1">LinearLayoutManager</span><span class="s3">(</span><span class="s1">getContext</span><span class="s3">()));</span>
+        <span class="s1">adapter </span><span class="s3">= </span><span class="s2">new </span><span class="s1">MeasurementAdapter</span><span class="s3">();</span>
+        <span class="s1">recyclerHistory</span><span class="s3">.</span><span class="s1">setAdapter</span><span class="s3">(</span><span class="s1">adapter</span><span class="s3">);</span>
+        <span class="s1">loadHistory</span><span class="s3">();</span>
+    <span class="s3">}</span>
+    <span class="s2">public void </span><span class="s1">updateList</span><span class="s3">(</span><span class="s1">List</span><span class="s3">&lt;</span><span class="s1">Measurement</span><span class="s3">&gt; </span><span class="s1">list</span><span class="s3">) {</span>
+        <span class="s1">adapter</span><span class="s3">.</span><span class="s1">setItems</span><span class="s3">(</span><span class="s1">list</span><span class="s3">);</span>
+    <span class="s3">}</span>
+
+
+    <span class="s2">private void </span><span class="s1">loadHistory</span><span class="s3">() {</span>
+        <span class="s2">new </span><span class="s1">Thread</span><span class="s3">(() </span><span class="s1">-&gt; </span><span class="s3">{</span>
+            <span class="s1">List</span><span class="s3">&lt;</span><span class="s1">Measurement</span><span class="s3">&gt; </span><span class="s1">list </span><span class="s3">= </span><span class="s1">AppDatabase</span><span class="s3">.</span><span class="s1">getInstance</span><span class="s3">(</span><span class="s1">getContext</span><span class="s3">())</span>
+                    <span class="s3">.</span><span class="s1">measurementDao</span><span class="s3">()</span>
+                    <span class="s3">.</span><span class="s1">all</span><span class="s3">();</span>
+            <span class="s1">requireActivity</span><span class="s3">().</span><span class="s1">runOnUiThread</span><span class="s3">(() </span><span class="s1">-&gt; adapter</span><span class="s3">.</span><span class="s1">setItems</span><span class="s3">(</span><span class="s1">list</span><span class="s3">));</span>
+        <span class="s3">}).</span><span class="s1">start</span><span class="s3">();</span>
+    <span class="s3">}</span>
+
+<span class="s3">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,155 @@
+#include "WiFi.h"
+#include "WebServer.h"
+#include "esp_camera.h"
+
+// ——— Pin Definitions ——————————————————————
+#define CAM_POWER_PIN   42
+#define FLASH_PIN       21
+
+// OV2640 pin mapping (custom PCB)
+#define PWDN_GPIO_NUM   -1
+#define RESET_GPIO_NUM  -1
+#define XCLK_GPIO_NUM    10
+#define SIOD_GPIO_NUM    20
+#define SIOC_GPIO_NUM    19
+#define Y9_GPIO_NUM      18
+#define Y8_GPIO_NUM      17
+#define Y7_GPIO_NUM      16
+#define Y6_GPIO_NUM      15
+#define D3_GPIO_NUM       7
+#define D2_GPIO_NUM       6
+#define D1_GPIO_NUM       5
+#define D0_GPIO_NUM       4
+#define VSYNC_GPIO_NUM   48
+#define HREF_GPIO_NUM    47
+#define PCLK_GPIO_NUM     8
+
+WebServer server(80);
+
+void dumpRequest() {
+  Serial.printf("\n>>> HTTP %s %s\n",
+    server.method()==HTTP_GET?"GET":
+    server.method()==HTTP_POST?"POST":"OTHER",
+    server.uri().c_str()
+  );
+  for (int i = 0; i < server.headers(); i++) {
+    Serial.printf("  %s: %s\n",
+      server.headerName(i).c_str(),
+      server.header(i).c_str());
+  }
+  for (int i = 0; i < server.args(); i++) {
+    Serial.printf("  arg %s=%s\n",
+      server.argName(i).c_str(),
+      server.arg(i).c_str());
+  }
+}
+
+void handleNotFound() {
+  Serial.printf("[HTTP] 404 for %s\n", server.uri().c_str());
+  server.send(404, "text/plain", "Not Found");
+}
+
+void handleLed() {
+  dumpRequest();
+  if (!server.hasArg("state")) {
+    server.send(400, "text/plain", "Missing 'state'");
+    return;
+  }
+  String s = server.arg("state");
+  digitalWrite(FLASH_PIN, s == "on" ? HIGH : LOW);
+  server.send(200, "text/plain", "LED " + s + " OK");
+  Serial.printf("  → LED %s\n", s.c_str());
+}
+
+void handleCapture() {
+  dumpRequest();
+  Serial.println("[HTTP] /capture");
+  // briefly blink flash so you see it
+  digitalWrite(FLASH_PIN, HIGH);
+  delay(50);
+
+  camera_fb_t * fb = esp_camera_fb_get();
+  digitalWrite(FLASH_PIN, LOW);
+  if (!fb) {
+    Serial.println("  → fb_get failed");
+    server.send(500, "text/plain", "Capture failed");
+    return;
+  }
+
+  // *Raw HTTP response* so no WebServer layers mangle the JPEG
+  WiFiClient &client = server.client();
+  client.print("HTTP/1.1 200 OK\r\n");
+  client.print("Content-Type: image/jpeg\r\n");
+  client.print("Content-Length: " + String(fb->len) + "\r\n");
+  client.print("Connection: close\r\n");
+  client.print("\r\n");
+  client.write(fb->buf, fb->len);
+  esp_camera_fb_return(fb);
+  Serial.printf("  → sent %u bytes\n", fb->len);
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(100);
+
+  // power on camera + init flash pin
+  pinMode(CAM_POWER_PIN, OUTPUT);
+  digitalWrite(CAM_POWER_PIN, HIGH);
+  delay(50);
+  pinMode(FLASH_PIN, OUTPUT);
+  digitalWrite(FLASH_PIN, LOW);
+
+  // camera config
+  camera_config_t cfg;
+  cfg.ledc_channel = LEDC_CHANNEL_0;
+  cfg.ledc_timer   = LEDC_TIMER_0;
+  cfg.pin_d0       = D0_GPIO_NUM;
+  cfg.pin_d1       = D1_GPIO_NUM;
+  cfg.pin_d2       = D2_GPIO_NUM;
+  cfg.pin_d3       = D3_GPIO_NUM;
+  cfg.pin_d4       = Y6_GPIO_NUM;
+  cfg.pin_d5       = Y7_GPIO_NUM;
+  cfg.pin_d6       = Y8_GPIO_NUM;
+  cfg.pin_d7       = Y9_GPIO_NUM;
+  cfg.pin_xclk     = XCLK_GPIO_NUM;
+  cfg.pin_pclk     = PCLK_GPIO_NUM;
+  cfg.pin_vsync    = VSYNC_GPIO_NUM;
+  cfg.pin_href     = HREF_GPIO_NUM;
+  cfg.pin_sscb_sda = SIOD_GPIO_NUM;
+  cfg.pin_sscb_scl = SIOC_GPIO_NUM;
+  cfg.pin_pwdn     = PWDN_GPIO_NUM;
+  cfg.pin_reset    = RESET_GPIO_NUM;
+  cfg.xclk_freq_hz = 20000000;
+  cfg.pixel_format = PIXFORMAT_JPEG;
+
+  // no PSRAM: QVGA @ Q8 in DRAM
+  cfg.frame_size   = FRAMESIZE_QVGA;
+  cfg.jpeg_quality = 8;
+  cfg.fb_count     = 1;
+  cfg.fb_location  = CAMERA_FB_IN_DRAM;
+
+  esp_err_t err = esp_camera_init(&cfg);
+  Serial.printf("esp_camera_init() returned 0x%04x\n", err);
+  if (err != ESP_OK) {
+    Serial.println("Camera init failed, halting");
+    while(true) delay(1000);
+  }
+  Serial.println("Camera init OK");
+
+  // start AP + server
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP("pH-Cam", "12345678");
+  Serial.print("AP IP address: ");
+  Serial.println(WiFi.softAPIP());
+
+  server.on("/led",         HTTP_GET, handleLed);
+  server.on("/capture.jpg", HTTP_GET, handleCapture);
+  server.on("/capture",     HTTP_GET, handleCapture);
+  server.onNotFound(handleNotFound);
+  server.begin();
+  Serial.println("HTTP server started");
+}
+
+void loop() {
+  server.handleClient();
+}

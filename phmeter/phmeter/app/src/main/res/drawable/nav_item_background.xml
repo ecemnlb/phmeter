@@ -1,0 +1,18 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Checked: draw a pill/circle behind the icon -->
+    <item android:state_checked="true">
+        <inset
+            android:insetLeft="24dp"
+            android:insetRight="24dp"
+            android:insetTop="8dp"
+            android:insetBottom="8dp">
+            <shape android:shape="oval">
+                <solid android:color="@color/activeCircleColor"/>
+            </shape>
+        </inset>
+    </item>
+    <!-- Default: transparent -->
+    <item>
+        <color android:color="@android:color/transparent"/>
+    </item>
+</selector>

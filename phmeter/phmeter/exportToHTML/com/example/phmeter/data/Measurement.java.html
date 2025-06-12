@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>Measurement.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4;}
+.s1 { color: #cf8e6d;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Measurement.java</font>
+</center></td></tr></table>
+<pre>
+<span class="s1">package </span><span class="s0">com</span><span class="s2">.</span><span class="s0">example</span><span class="s2">.</span><span class="s0">phmeter</span><span class="s2">.</span><span class="s0">data</span><span class="s2">;</span>
+
+<span class="s1">import </span><span class="s0">androidx</span><span class="s2">.</span><span class="s0">room</span><span class="s2">.</span><span class="s0">Entity</span><span class="s2">;</span>
+<span class="s1">import </span><span class="s0">androidx</span><span class="s2">.</span><span class="s0">room</span><span class="s2">.</span><span class="s0">PrimaryKey</span><span class="s2">;</span>
+
+<span class="s0">@Entity</span>
+<span class="s1">public class </span><span class="s0">Measurement </span><span class="s2">{</span>
+    <span class="s0">@PrimaryKey</span><span class="s2">(</span><span class="s0">autoGenerate </span><span class="s2">= </span><span class="s1">true</span><span class="s2">)</span>
+    <span class="s1">public int </span><span class="s0">id</span><span class="s2">;</span>
+
+    <span class="s1">public long </span><span class="s0">timestamp</span><span class="s2">;  </span><span class="s3">// milliseconds since epoch</span>
+    <span class="s1">public float </span><span class="s0">pH</span><span class="s2">;</span>
+
+    <span class="s3">// Optional: if you save thumbnails or full images, add:</span>
+    <span class="s3">// public String imagePath;</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

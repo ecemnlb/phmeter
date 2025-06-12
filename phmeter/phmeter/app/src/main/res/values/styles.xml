@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CircularImageView">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:background">@drawable/circle_mask</item>
+    </style>
+
+</resources>

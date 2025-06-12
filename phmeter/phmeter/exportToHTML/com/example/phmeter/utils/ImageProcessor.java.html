@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>ImageProcessor.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ImageProcessor.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">phmeter</span><span class="s2">.</span><span class="s1">utils</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">graphics</span><span class="s2">.</span><span class="s1">Bitmap</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Arrays</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s0">class </span><span class="s1">CalibrationPoint </span><span class="s2">{</span>
+    <span class="s0">final float </span><span class="s1">pH</span><span class="s2">, </span><span class="s1">r</span><span class="s2">, </span><span class="s1">g</span><span class="s2">, </span><span class="s1">b</span><span class="s2">;</span>
+    <span class="s1">CalibrationPoint</span><span class="s2">(</span><span class="s0">float </span><span class="s1">pH</span><span class="s2">, </span><span class="s0">float </span><span class="s1">r</span><span class="s2">, </span><span class="s0">float </span><span class="s1">g</span><span class="s2">, </span><span class="s0">float </span><span class="s1">b</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">pH </span><span class="s2">= </span><span class="s1">pH</span><span class="s2">; </span><span class="s0">this</span><span class="s2">.</span><span class="s1">r </span><span class="s2">= </span><span class="s1">r</span><span class="s2">; </span><span class="s0">this</span><span class="s2">.</span><span class="s1">g </span><span class="s2">= </span><span class="s1">g</span><span class="s2">; </span><span class="s0">this</span><span class="s2">.</span><span class="s1">b </span><span class="s2">= </span><span class="s1">b</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+
+<span class="s0">public class </span><span class="s1">ImageProcessor </span><span class="s2">{</span>
+    <span class="s0">private static final </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CalibrationPoint</span><span class="s2">&gt; </span><span class="s1">CALIB </span><span class="s2">= </span><span class="s1">Arrays</span><span class="s2">.</span><span class="s1">asList</span><span class="s2">(</span>
+            <span class="s0">new </span><span class="s1">CalibrationPoint</span><span class="s2">(</span><span class="s3">4.0f</span><span class="s2">, </span><span class="s3">190</span><span class="s2">,  </span><span class="s3">30</span><span class="s2">,  </span><span class="s3">40</span><span class="s2">),</span>
+            <span class="s0">new </span><span class="s1">CalibrationPoint</span><span class="s2">(</span><span class="s3">6.0f</span><span class="s2">, </span><span class="s3">160</span><span class="s2">,  </span><span class="s3">80</span><span class="s2">,  </span><span class="s3">60</span><span class="s2">),</span>
+            <span class="s0">new </span><span class="s1">CalibrationPoint</span><span class="s2">(</span><span class="s3">7.0f</span><span class="s2">, </span><span class="s3">120</span><span class="s2">, </span><span class="s3">180</span><span class="s2">,  </span><span class="s3">90</span><span class="s2">),</span>
+            <span class="s0">new </span><span class="s1">CalibrationPoint</span><span class="s2">(</span><span class="s3">8.0f</span><span class="s2">,  </span><span class="s3">80</span><span class="s2">, </span><span class="s3">200</span><span class="s2">, </span><span class="s3">120</span><span class="s2">),</span>
+            <span class="s0">new </span><span class="s1">CalibrationPoint</span><span class="s2">(</span><span class="s3">10.0f</span><span class="s2">,  </span><span class="s3">60</span><span class="s2">,  </span><span class="s3">90</span><span class="s2">, </span><span class="s3">200</span><span class="s2">)</span>
+            <span class="s4">// …add calibration points here</span>
+    <span class="s2">);</span>
+
+    <span class="s0">public static </span><span class="s1">Bitmap cropROI</span><span class="s2">(</span><span class="s1">Bitmap src</span><span class="s2">, </span><span class="s0">int </span><span class="s1">index</span><span class="s2">) {</span>
+        <span class="s0">int </span><span class="s1">w </span><span class="s2">= </span><span class="s1">src</span><span class="s2">.</span><span class="s1">getWidth</span><span class="s2">() / </span><span class="s3">4</span><span class="s2">;</span>
+        <span class="s0">return </span><span class="s1">Bitmap</span><span class="s2">.</span><span class="s1">createBitmap</span><span class="s2">(</span><span class="s1">src</span><span class="s2">, </span><span class="s1">index </span><span class="s2">* </span><span class="s1">w</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s1">w</span><span class="s2">, </span><span class="s1">src</span><span class="s2">.</span><span class="s1">getHeight</span><span class="s2">());</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public static float</span><span class="s2">[] </span><span class="s1">avgColor</span><span class="s2">(</span><span class="s1">Bitmap bmp</span><span class="s2">) {</span>
+        <span class="s0">int </span><span class="s1">w </span><span class="s2">= </span><span class="s1">bmp</span><span class="s2">.</span><span class="s1">getWidth</span><span class="s2">(), </span><span class="s1">h </span><span class="s2">= </span><span class="s1">bmp</span><span class="s2">.</span><span class="s1">getHeight</span><span class="s2">();</span>
+        <span class="s0">long </span><span class="s1">sumR</span><span class="s2">=</span><span class="s3">0</span><span class="s2">, </span><span class="s1">sumG</span><span class="s2">=</span><span class="s3">0</span><span class="s2">, </span><span class="s1">sumB</span><span class="s2">=</span><span class="s3">0</span><span class="s2">;</span>
+        <span class="s0">int</span><span class="s2">[] </span><span class="s1">pixels </span><span class="s2">= </span><span class="s0">new int</span><span class="s2">[</span><span class="s1">w</span><span class="s2">*</span><span class="s1">h</span><span class="s2">];</span>
+        <span class="s1">bmp</span><span class="s2">.</span><span class="s1">getPixels</span><span class="s2">(</span><span class="s1">pixels</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s1">w</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s1">w</span><span class="s2">, </span><span class="s1">h</span><span class="s2">);</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">p </span><span class="s2">: </span><span class="s1">pixels</span><span class="s2">) {</span>
+            <span class="s1">sumR </span><span class="s2">+= (</span><span class="s1">p </span><span class="s2">&gt;&gt; </span><span class="s3">16</span><span class="s2">) &amp; </span><span class="s3">0xFF</span><span class="s2">;</span>
+            <span class="s1">sumG </span><span class="s2">+= (</span><span class="s1">p </span><span class="s2">&gt;&gt;  </span><span class="s3">8</span><span class="s2">) &amp; </span><span class="s3">0xFF</span><span class="s2">;</span>
+            <span class="s1">sumB </span><span class="s2">+=  </span><span class="s1">p        </span><span class="s2">&amp; </span><span class="s3">0xFF</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s0">float </span><span class="s1">total </span><span class="s2">= </span><span class="s1">w </span><span class="s2">* </span><span class="s1">h</span><span class="s2">;</span>
+        <span class="s0">return new float</span><span class="s2">[]{ </span><span class="s1">sumR</span><span class="s2">/</span><span class="s1">total</span><span class="s2">, </span><span class="s1">sumG</span><span class="s2">/</span><span class="s1">total</span><span class="s2">, </span><span class="s1">sumB</span><span class="s2">/</span><span class="s1">total </span><span class="s2">};</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public static float </span><span class="s1">mapColorToPH</span><span class="s2">(</span><span class="s0">float </span><span class="s1">r</span><span class="s2">, </span><span class="s0">float </span><span class="s1">g</span><span class="s2">, </span><span class="s0">float </span><span class="s1">b</span><span class="s2">) {</span>
+        <span class="s1">CalibrationPoint best </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+        <span class="s0">double </span><span class="s1">bestDist </span><span class="s2">= </span><span class="s1">Double</span><span class="s2">.</span><span class="s1">MAX_VALUE</span><span class="s2">;</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">CalibrationPoint cp </span><span class="s2">: </span><span class="s1">CALIB</span><span class="s2">) {</span>
+            <span class="s0">double </span><span class="s1">dx </span><span class="s2">= </span><span class="s1">r </span><span class="s2">- </span><span class="s1">cp</span><span class="s2">.</span><span class="s1">r</span><span class="s2">;</span>
+            <span class="s0">double </span><span class="s1">dy </span><span class="s2">= </span><span class="s1">g </span><span class="s2">- </span><span class="s1">cp</span><span class="s2">.</span><span class="s1">g</span><span class="s2">;</span>
+            <span class="s0">double </span><span class="s1">dz </span><span class="s2">= </span><span class="s1">b </span><span class="s2">- </span><span class="s1">cp</span><span class="s2">.</span><span class="s1">b</span><span class="s2">;</span>
+            <span class="s0">double </span><span class="s1">d  </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">sqrt</span><span class="s2">(</span><span class="s1">dx</span><span class="s2">*</span><span class="s1">dx </span><span class="s2">+ </span><span class="s1">dy</span><span class="s2">*</span><span class="s1">dy </span><span class="s2">+ </span><span class="s1">dz</span><span class="s2">*</span><span class="s1">dz</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">d </span><span class="s2">&lt; </span><span class="s1">bestDist</span><span class="s2">) {</span>
+                <span class="s1">bestDist </span><span class="s2">= </span><span class="s1">d</span><span class="s2">;</span>
+                <span class="s1">best </span><span class="s2">= </span><span class="s1">cp</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">best </span><span class="s2">!= </span><span class="s0">null </span><span class="s2">? </span><span class="s1">best</span><span class="s2">.</span><span class="s1">pH </span><span class="s2">: </span><span class="s1">Float</span><span class="s2">.</span><span class="s1">NaN</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="teal_700">#00796B</color>
+    <color name="buttoncolor">#98d2c0</color>
+    <color name="phtextcolorx">#4f959d</color>
+    <color name="navbarcolor">#205781</color>
+    <color name="phtextcolor">#205781</color>
+    <color name="background_light">#f5f5f5</color>
+    <color name="white_20">#33FFFFFF</color>
+
+    <color name="navbarColor">#F5F5F5</color>         <!-- bar background -->
+    <color name="activeCircleColor">#80FF4081</color>  <!-- the circle under selected -->
+    <color name="navIconInactive">#888888</color>
+    <color name="navIconActive">#FF4081</color>
+
+
+
+</resources>
